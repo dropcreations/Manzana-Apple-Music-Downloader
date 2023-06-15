@@ -164,6 +164,8 @@ Encoded date                : 2022-08-13 13:39:59 UTC
 Tagged date                 : 2023-03-26 19:26:20 UTC
 ```
 
+- Samples [here](https://drive.google.com/drive/folders/191ZdiG6Rfv23ivfIwSGBAuyrVgcBUsYv)
+
 ### Note
 
 - Use the Windows Terminal app for better experience
