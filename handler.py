@@ -19,20 +19,6 @@ def __get_path():
 CACHE = os.path.join(__get_path(), "cache")
 CONFIG = os.path.join(__get_path(), "config")
 
-def __checkWidevine():
-    d = os.listdir(
-        os.path.join("widevine", "devices", "android_generic")
-    )
-    if len(d) == 1:
-        if d[0] == "README.txt":
-            logger.error("No Widevine device found!", 1)
-    f = os.listdir(
-        os.path.join("widevine", "formats")
-    )
-    if len(f) == 1:
-        if f[0] == "README.txt":
-            logger.error("No Widevine PSSH data protos found!", 1)
-
 def __temp():
     if os.path.exists("__encrypted.mp4"):
         os.remove("__encrypted.mp4")
@@ -57,8 +43,12 @@ def __temp():
     if os.path.exists("Cover.mp4"):
         os.remove("Cover.mp4")
 
+def __sanitize(path):
+    if path != "":
+        return sanitize(path)
+    return path
+
 def arguments(args):
-    __checkWidevine()
     __temp()
 
     syncMsPointCount = 2
@@ -70,7 +60,7 @@ def arguments(args):
     __dir = data.get("dir")
 
     if os.path.exists(
-        os.path.join(sanitize(__dir), "Cover.jpg")
+        os.path.join(__sanitize(__dir), "Cover.jpg")
     ):
         logger.warning('"Cover.jpg" is already exists!')
     else:
@@ -85,7 +75,7 @@ def arguments(args):
                 )
 
     if os.path.exists(
-        os.path.join(sanitize(__dir), "Cover.mp4")
+        os.path.join(__sanitize(__dir), "Cover.mp4")
     ):
         logger.warning('"Cover.mp4" is already exists!')
     else:
@@ -118,7 +108,7 @@ def arguments(args):
 
         if "streamUrl" in content:
             if os.path.exists(
-                os.path.join(sanitize(__dir), f"{sanitize(__file)}.m4a")
+                os.path.join(__sanitize(__dir), f"{__sanitize(__file)}.m4a")
             ):
                 logger.warning(f'"{__file}.m4a" is already exists!')
             else:
@@ -145,7 +135,7 @@ def arguments(args):
                             try:
                                 os.renames(
                                     "Cover.jpg",
-                                    os.path.join(sanitize(__dir), "Cover.jpg")
+                                    os.path.join(__sanitize(__dir), "Cover.jpg")
                                 )
                             except FileExistsError:
                                 logger.warning('"Cover.jpg" is already exists!')
@@ -153,7 +143,7 @@ def arguments(args):
                             try:
                                 os.renames(
                                     "Cover.mp4",
-                                    os.path.join(sanitize(__dir), "Cover.mp4")
+                                    os.path.join(__sanitize(__dir), "Cover.mp4")
                                 )
                             except FileExistsError:
                                 logger.warning('"Cover.mp4" is already exists!')
@@ -161,18 +151,18 @@ def arguments(args):
                         tag(
                             "__muxed.m4a",
                             track,
-                            os.path.join(sanitize(__dir), "Cover.jpg"),
+                            os.path.join(__sanitize(__dir), "Cover.jpg"),
                             "__muxed.lrc",
                             nocover=args.no_cover,
                             nolrc=args.no_lrc
                         )
                         os.renames(
                             "__muxed.m4a",
-                            os.path.join(sanitize(__dir), f"{sanitize(__file)}.m4a")
+                            os.path.join(__sanitize(__dir), f"{__sanitize(__file)}.m4a")
                         )
                         if not args.no_lrc: os.renames(
                             "__muxed.lrc",
-                            os.path.join(sanitize(__dir), f"{sanitize(__file)}.lrc")
+                            os.path.join(__sanitize(__dir), f"{__sanitize(__file)}.lrc")
                         )
                     else:
                         if os.path.exists("__decrypted.mp4"): os.remove("__decrypted.mp4")
@@ -184,7 +174,7 @@ def arguments(args):
                     logger.error("Decryption failed!", 1)
         else:
             if os.path.exists(
-                os.path.join(sanitize(__dir), f"{sanitize(__file)}.mp4")
+                os.path.join(__sanitize(__dir), f"{__sanitize(__file)}.mp4")
             ):
                 logger.warning(f'"{__file}.mp4" is already exists!')
             else:
@@ -265,7 +255,7 @@ def arguments(args):
                     )
                     os.renames(
                         "__output.mp4",
-                        os.path.join(sanitize(__dir), f"{sanitize(__file)}.mp4")
+                        os.path.join(__sanitize(__dir), f"{__sanitize(__file)}.mp4")
                     )
                 else:
                     if os.path.exists("__decrypted_video.mp4"): os.remove("__decrypted_video.mp4")
