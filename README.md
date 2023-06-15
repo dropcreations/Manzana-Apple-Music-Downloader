@@ -13,3 +13,5 @@ A python program to download albums and songs with `AAC` codec in `.m4a` contain
 - __THIS REPOSITORY IS ONLY FOR EDUCATIONAL PURPOSES.__
 
 This will help you to understand how the Apple Music API works and how to deal with python scripts. This is basically created for Windows OS. If you want you can change the binaries and the script to work with Linux, MacOS...etc. To use this repository you need to find some stuff. see the code.
+
+Inspired by: [this](https://github.com/loveyoursupport/AppleMusic-Downloader)
