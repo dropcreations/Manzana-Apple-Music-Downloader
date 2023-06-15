@@ -29,6 +29,87 @@ This will help you to understand how the Apple Music API works and how to deal w
 - `MusicVideo`: [DJ Snake - Taki Taki](https://music.apple.com/lk/music-video/taki-taki-feat-selena-gomez-ozuna-cardi-b/1438473545)
 
 ```
+Format                      : MPEG-4
+Format profile              : Base Media
+Codec ID                    : isom (isom/iso2/mp41)
+File size                   : 342 MiB
+Duration                    : 3 min 51 s
+Overall bit rate mode       : Variable
+Overall bit rate            : 12.4 Mb/s
+Frame rate                  : 23.976 FPS
+Movie name                  : Taki Taki (feat. Selena Gomez, Ozuna & Cardi B)
+Performer                   : DJ Snake
+Genre                       : Dance
+ContentType                 : Music Video
+Recorded date               : 2018-10-09
+ISRC                        : USUMV1801044
+Rating                      : Explicit
+
+Video
+ID                          : 1
+Format                      : HEVC
+Format/Info                 : High Efficiency Video Coding
+Format profile              : Main 10@L5@High
+Codec ID                    : hvc1
+Codec ID/Info               : High Efficiency Video Coding
+Duration                    : 3 min 51 s
+Source duration             : 3 min 51 s
+Bit rate                    : 12.1 Mb/s
+Width                       : 3 832 pixels
+Height                      : 1 434 pixels
+Display aspect ratio        : 2.672
+Frame rate mode             : Variable
+Frame rate                  : 23.976 FPS
+Minimum frame rate          : 23.976 FPS
+Maximum frame rate          : 24.768 FPS
+Color space                 : YUV
+Chroma subsampling          : 4:2:0
+Bit depth                   : 10 bits
+Scan type                   : Progressive
+Bits/(Pixel*Frame)          : 0.092
+Stream size                 : 334 MiB (98%)
+Source stream size          : 334 MiB (98%)
+Title                       : Core Media Video
+Language                    : English
+Color range                 : Limited
+Color primaries             : BT.709
+Transfer characteristics    : BT.709
+Matrix coefficients         : BT.709
+mdhd_Duration               : 231606
+Codec configuration box     : hvcC
+
+Audio
+ID                          : 2
+Format                      : AAC LC
+Format/Info                 : Advanced Audio Codec Low Complexity
+Codec ID                    : mp4a-40-2
+Duration                    : 3 min 51 s
+Bit rate mode               : Constant
+Bit rate                    : 248 kb/s
+Channel(s)                  : 2 channels
+Channel layout              : L R
+Sampling rate               : 48.0 kHz
+Frame rate                  : 46.875 FPS (1024 SPF)
+Compression mode            : Lossy
+Stream size                 : 6.85 MiB (2%)
+Title                       : Core Media Audio
+Default                     : Yes
+Alternate group             : 1
+
+Text
+ID                          : 3
+Format                      : Timed Text
+Muxing mode                 : sbtl
+Codec ID                    : tx3g
+Duration                    : 3 min 45 s
+Bit rate mode               : Variable
+Bit rate                    : 126 b/s
+Frame rate                  : 0.749 FPS
+Stream size                 : 3.47 KiB (0%)
+Default                     : Yes
+Forced                      : No
+Alternate group             : 3
+Count of events             : 84
 ```
 
 - `Album`: [Doja Cat - Planet Her](https://music.apple.com/lk/album/planet-her-deluxe/1574004234)
