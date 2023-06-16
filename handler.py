@@ -104,11 +104,19 @@ def arguments(args):
             track.get("type")
         )
 
+        __disc = ""
+
+        if "disccount" in content:
+            track["disccount"] = content.get("disccount")
+
+            if int(content.get("disccount")) > 1:
+                __disc = "Disc {0}".format(str(track.get("discnumber")).zfill(2))
+
         __file = track.get("file")
 
         if "streamUrl" in content:
             if os.path.exists(
-                os.path.join(__sanitize(__dir), f"{__sanitize(__file)}.m4a")
+                os.path.join(__sanitize(__dir), __disc, f"{__sanitize(__file)}.m4a")
             ):
                 logger.warning(f'"{__file}.m4a" is already exists!')
             else:
@@ -158,11 +166,11 @@ def arguments(args):
                         )
                         os.renames(
                             "__muxed.m4a",
-                            os.path.join(__sanitize(__dir), f"{__sanitize(__file)}.m4a")
+                            os.path.join(__sanitize(__dir), __disc, f"{__sanitize(__file)}.m4a")
                         )
                         if not args.no_lrc: os.renames(
                             "__muxed.lrc",
-                            os.path.join(__sanitize(__dir), f"{__sanitize(__file)}.lrc")
+                            os.path.join(__sanitize(__dir), __disc, f"{__sanitize(__file)}.lrc")
                         )
                     else:
                         if os.path.exists("__decrypted.mp4"): os.remove("__decrypted.mp4")
@@ -174,7 +182,7 @@ def arguments(args):
                     logger.error("Decryption failed!", 1)
         else:
             if os.path.exists(
-                os.path.join(__sanitize(__dir), f"{__sanitize(__file)}.mp4")
+                os.path.join(__sanitize(__dir), __disc, f"{__sanitize(__file)}.mp4")
             ):
                 logger.warning(f'"{__file}.mp4" is already exists!')
             else:
@@ -255,7 +263,7 @@ def arguments(args):
                     )
                     os.renames(
                         "__output.mp4",
-                        os.path.join(__sanitize(__dir), f"{__sanitize(__file)}.mp4")
+                        os.path.join(__sanitize(__dir), __disc, f"{__sanitize(__file)}.mp4")
                     )
                 else:
                     if os.path.exists("__decrypted_video.mp4"): os.remove("__decrypted_video.mp4")
