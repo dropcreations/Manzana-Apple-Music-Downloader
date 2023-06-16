@@ -10,6 +10,10 @@ def tag(
     tags = MP4(media)
     tags.delete()
 
+    discCount = data.get("discnumber")
+    if "disccount" in data:
+        discCount = data.get("disccount")
+
     rating = 0
     if data.get("rating") == "explicit":
         rating = 4
@@ -27,7 +31,7 @@ def tag(
         "stik": data.get("type"),
         "\xa9lyr": data.get("lyrics"),
         "trkn": (data.get("tracknumber"), data.get("trackcount")),
-        "disk": (data.get("discnumber"), data.get("discnumber")),
+        "disk": (data.get("discnumber"), discCount),
         "----:com.apple.itunes:Label": data.get("recordlabel"),
         "----:com.apple.itunes:ISRC": data.get("isrc"),
         "----:com.apple.itunes:UPC": data.get("upc"),
