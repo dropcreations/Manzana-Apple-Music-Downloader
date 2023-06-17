@@ -168,10 +168,11 @@ def arguments(args):
                             "__muxed.m4a",
                             os.path.join(__sanitize(__dir), __disc, f"{__sanitize(__file)}.m4a")
                         )
-                        if not args.no_lrc: os.renames(
-                            "__muxed.lrc",
-                            os.path.join(__sanitize(__dir), __disc, f"{__sanitize(__file)}.lrc")
-                        )
+                        if not args.no_lrc:
+                            if os.path.exists("__muxed.lrc"): os.renames(
+                                "__muxed.lrc",
+                                os.path.join(__sanitize(__dir), __disc, f"{__sanitize(__file)}.lrc")
+                            )
                     else:
                         if os.path.exists("__decrypted.mp4"): os.remove("__decrypted.mp4")
                         if os.path.exists("__muxed.m4a"): os.remove("__muxed.m4a")
