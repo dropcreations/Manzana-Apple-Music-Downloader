@@ -16,6 +16,8 @@ def __getTs(ts, syncpoints: int):
 def getLyrics(ttml, syncpoints: int):
     ttml = BeautifulSoup(ttml, "lxml")
 
+    info = {}
+
     lyrics = []
     songwriters = []
     timeSyncedLyrics = []
@@ -24,21 +26,25 @@ def getLyrics(ttml, syncpoints: int):
     if len(songwriter) > 0:
         for sw in songwriter:
             songwriters.append(sw.text)
+        info["songwriter"] = ', '.join(songwriters)
 
     for line in ttml.find_all("p"):
         lyrics.append(line.text)
-        if "span" in str(line):
-            span = BeautifulSoup(str(line), "lxml")
 
-            for s in span.find_all("span", attrs={'begin': True, 'end': True}):
-                begin = __getTs(s.get("begin"), syncpoints)
-                timeSyncedLyrics.append(f"[{begin}]{s.text}")
-        else:
-            begin = __getTs(line.get("begin"), syncpoints)
-            timeSyncedLyrics.append(f"[{begin}]{line.text}")
+        __timing = ttml.find("tt").get("itunes:timing")
 
-    return {
-        "lyrics": lyrics,
-        "songwriter": ', '.join(songwriters) if len(songwriters) > 0 else None,
-        "timeSyncedLyrics": timeSyncedLyrics
-    }
+        if __timing != "None":
+            if "span" in str(line):
+                span = BeautifulSoup(str(line), "lxml")
+
+                for s in span.find_all("span", attrs={'begin': True, 'end': True}):
+                    begin = __getTs(s.get("begin"), syncpoints)
+                    timeSyncedLyrics.append(f"[{begin}]{s.text}")
+            else:
+                begin = __getTs(line.get("begin"), syncpoints)
+                timeSyncedLyrics.append(f"[{begin}]{line.text}")
+    
+    info["lyrics"] = lyrics
+    if timeSyncedLyrics: info["timeSyncedLyrics"] = timeSyncedLyrics
+    
+    return info
