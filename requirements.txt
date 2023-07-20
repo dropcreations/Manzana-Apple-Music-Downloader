@@ -1,0 +1,8 @@
+rich
+m3u8
+mutagen
+protobuf
+requests
+pycryptodomex
+beautifulsoup4
+sanitize_filename
