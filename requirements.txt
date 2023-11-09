@@ -1,8 +1,9 @@
 rich
+lxml
 m3u8
+aiohttp
 mutagen
-protobuf
 requests
+protobuf
 pycryptodomex
 beautifulsoup4
-sanitize_filename
