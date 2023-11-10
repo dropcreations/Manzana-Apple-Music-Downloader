@@ -35,8 +35,10 @@ def parse(ttml):
                 begin = __get_ts(s.get("begin"))
                 timeSyncedLyrics.append(f"[{begin}]{s.text}")
         else:
-            begin = __get_ts(line.get("begin"))
-            timeSyncedLyrics.append(f"[{begin}]{line.text}")
+            b = line.get("begin")
+            if b:
+                begin = __get_ts(b)
+                timeSyncedLyrics.append(f"[{begin}]{line.text}")
 
     return {
         "lyrics": lyrics,
