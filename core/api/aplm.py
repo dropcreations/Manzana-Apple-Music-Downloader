@@ -192,9 +192,6 @@ class AppleMusic:
             f"https://amp-api.music.apple.com/v1/catalog/{self.storefront}/{self.kind}s/{self.id}?l={self.language}",
             params=params
         )
-
-        if r.status_code != 200:
-            logger.error(f"[{r.status_code}] {r.reason}: {r.content}", 1)
         r = json.loads(r.text)
 
         if not "errors" in r:
@@ -204,8 +201,9 @@ class AppleMusic:
             if not isinstance(errors, list): errors = [errors]
             for error in errors:
                 logger.error(
-                    "{err_status}: {err_detail}".format(
+                    "[{err_status}] {err_title}: {err_details}".format(
                         err_status=error.get("status"),
+                        err_title=error.get("title"),
                         err_details=error.get("detail")
                     )
                 )
