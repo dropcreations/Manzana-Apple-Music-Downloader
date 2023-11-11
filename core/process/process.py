@@ -21,7 +21,6 @@ def decrypt(input, output, key):
     try:
         retCode = subprocess.Popen(
             cmd_args,
-            shell=True,
             stdin=subprocess.PIPE,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.STDOUT
@@ -37,7 +36,6 @@ def cc(input, output):
     try:
         retCode = subprocess.Popen(
             cmd_args,
-            shell=True,
             stdin=subprocess.PIPE,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.STDOUT
@@ -53,7 +51,6 @@ def muxhls(input, output):
     try:
         retCode = subprocess.Popen(
             cmd_args,
-            shell=True,
             stdin=subprocess.PIPE,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.STDOUT
@@ -75,7 +72,6 @@ def muxmv(video, audio, output, at, cc=None):
     try:
         retCode = subprocess.Popen(
             cmd_args,
-            shell=True,
             stdin=subprocess.PIPE,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.STDOUT
