@@ -1,12 +1,7 @@
 import os
+
 from mutagen.mp4 import MP4, MP4Cover
 from utils import logger
-
-def replaceChar(s):
-    if not isinstance(s, list):
-        return str(s).encode('latin-1', errors='replace').decode('latin-1')
-    else:
-        return [str(l).encode('latin-1', errors='replace').decode('latin-1') for l in s]
 
 def tag(media, data, cover, output, nocover=False, nolrc=False):
     tags = MP4(media)
@@ -43,15 +38,18 @@ def tag(media, data, cover, output, nocover=False, nolrc=False):
     for key, value in __tags.items():
         if value:
             if isinstance(value, list):
-                value = ['\r\n'.join(replaceChar(value))]
+                value = ['\r\n'.join(value)]
                 
                 if key.startswith("----:com.apple.itunes:"):
                     value = [val.encode() for val in value]
 
-                tags[replaceChar(key)] = value
+                try:
+                    tags[key] = value
+                except UnicodeEncodeError:
+                    continue
             else:
                 if key.startswith("----:com.apple.itunes:"):
-                    value = replaceChar(value).encode()
+                    value = value.encode()
                 
                 if key in [
                     "aART",
@@ -68,7 +66,10 @@ def tag(media, data, cover, output, nocover=False, nolrc=False):
                         '\r\n'
                     )
 
-                tags[replaceChar(key)] = [value]
+                try:
+                    tags[key] = [value]
+                except UnicodeEncodeError:
+                    continue
 
     if not nocover:
         logger.info("Embedding artwork...")
