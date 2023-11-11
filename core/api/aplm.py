@@ -6,6 +6,9 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from base64 import b64decode, b64encode
 from rich.console import Console
+from rich.columns import Columns
+from rich.table import Table
+from rich import box
 
 from core import parse
 from utils import logger
@@ -91,8 +94,58 @@ class AppleMusic:
             self.session.headers['authorization'] = f'Bearer {at}'
             config.set('accessToken', at)
 
+    def __get_language(self, attr: dict, csl):
+        d = attr["defaultLanguageTag"]
+        s = attr["supportedLanguageTags"]
+
+        if not isinstance(s, list):
+            s = [s]
+
+        if csl in s:
+            return csl
+        
+        if len(s) == 1:
+            return s[0]
+        
+        logger.info("Getting storefront language...")
+        cons.print(f'\n\t [dim]Storefront:[/] {attr["name"]}')
+
+        ids = []
+        table = Table(box=box.ROUNDED)
+
+        table.add_column("ID", justify="center")
+        table.add_column("Lang", justify="center")
+        table.add_column("Default", justify="center")
+
+        for i, l in enumerate(s):
+            ids.append(i)
+
+            df = "[dim]NO[/]"
+            if l == d:
+                df = "YES"
+
+            table.add_row(str(i), l, df)
+        
+        print()
+        columns = Columns(["       ", table])
+        cons.print(columns)
+        id = input("\n\t Enter ID: ")
+        print()
+        
+        if id == "": logger.error("Please enter an ID to continue!", 1)
+        else:
+            try: id = int(id)
+            except: logger.error("Invalid input!", 1)
+
+        if id in ids:
+            config.set('storeLang', s[id])
+            return s[id]
+        else: logger.error("ID not found in the list!", 1)
+
     def __check_media_user_token(self):
         mut = config.get('mediaUserToken')
+        sl = config.get('storeLang')
+
         logger.info("Checking mediaUserToken...")
         self.session.headers['media-user-token'] = mut
         r = self.session.get("https://amp-api.music.apple.com/v1/me/storefront")
@@ -100,12 +153,13 @@ class AppleMusic:
         if r.status_code == 200:
             r = json.loads(r.text)
             self.storefront = r["data"][0]["id"]
-            self.language = r["data"][0]["attributes"]["defaultLanguageTag"]
+            self.language = self.__get_language(r["data"][0]["attributes"], sl)
             logger.debug(f"mediaUserToken is working! mediaUserToken: {mut}")
             self.session.headers['accept-language'] = f'{self.language},en;q=0.9'
         else:
             logger.error("Your mediaUserToken is invalid! Enter again to continue...")
             config.delete('mediaUserToken')
+            config.delete('storeLang')
             mut = input("\n\tmediaUserToken: "); print()
             config.set('mediaUserToken', mut)
             self.__check_media_user_token()
