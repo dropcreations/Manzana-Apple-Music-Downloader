@@ -67,6 +67,7 @@ def tag(media, data, cover, output, nocover=False, nolrc=False):
                     )
 
                 try:
+                    print(f"Writing tag {key}, {value}")
                     tags[key] = [value]
                 except UnicodeEncodeError:
                     continue

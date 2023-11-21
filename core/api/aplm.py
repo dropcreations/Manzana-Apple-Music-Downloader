@@ -21,6 +21,7 @@ from utils import WidevinePsshData
 from . import artist
 from . import album
 from . import musicvideo
+from . import playlist
 
 cons = Console()
 
@@ -234,18 +235,30 @@ class AppleMusic:
 
     def __get_api(self):
         logger.info("Fetching API response...")
+        
         params = None
+        url = f"https://amp-api.music.apple.com/v1/catalog/{self.storefront}/{self.kind}s/{self.id}?l={self.language}"
 
         if self.kind == "album":
             params = {
                 'extend': 'editorialVideo',
                 'include[songs]': 'lyrics,credits'
             }
+        elif self.kind == "playlist":
+            url = f"https://amp-api.music.apple.com/v1/me/library/playlists/{self.id}?l={self.language}"
+            params = {
+                'art[url]': 'f',
+                'format[resources]': 'map',
+                'include': 'catalog,artists,tracks,credits',
+                #'include[library-playlists]': 'catalog,tracks,playlists',
+                'include[songs]': 'artists,lyrics,credits,albums',
+                'include[credits]': 'credits',
+                #'include[albums]': 'artists',
+                'relate': 'catalog',
+                'omit[resource]': 'autos'
+            }
 
-        r = self.session.get(
-            f"https://amp-api.music.apple.com/v1/catalog/{self.storefront}/{self.kind}s/{self.id}?l={self.language}",
-            params=params
-        )
+        r = self.session.get(url, params=params)
         r = json.loads(r.text)
 
         if not "errors" in r:
@@ -276,6 +289,10 @@ class AppleMusic:
         elif self.kind == "music-video":
             data = musicvideo.parse_data(
                 self.__get_api()["data"][0]
+            )
+        elif self.kind == "playlist":
+            data = playlist.parse_data(
+                self.__get_api()
             )
         
         cache.set(self.id, data)

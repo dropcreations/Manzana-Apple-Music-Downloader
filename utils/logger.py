@@ -43,7 +43,7 @@ class ManzanaFormatter(logging.Formatter):
 def __get_logger():
     streamHandler = logging.StreamHandler()
     streamHandler.setFormatter(ManzanaFormatter())
-    streamHandler.setLevel(logging.INFO)
+    streamHandler.setLevel(logging.DEBUG)
 
     fileHandler = logging.FileHandler(
         filename=LOGFILE,
