@@ -253,7 +253,6 @@ class AppleMusic:
                 #'include[library-playlists]': 'catalog,tracks,playlists',
                 'include[songs]': 'artists,lyrics,credits,albums',
                 'include[credits]': 'credits',
-                #'include[albums]': 'artists',
                 'relate': 'catalog',
                 'omit[resource]': 'autos'
             }

@@ -46,7 +46,9 @@ def run(args):
 
                 out_dir = os.path.join(OUTPUTDIR, dn)
                 os.makedirs(out_dir, exist_ok=True)
-                cover_data = requests.get(sub_data.get("coverUrl"), stream=True).content
+
+                if aplm.kind != "playlist":
+                    cover_data = requests.get(sub_data.get("coverUrl"), stream=True).content
 
                 if args.anim:
                     __anh_fp = os.path.join(
@@ -80,6 +82,9 @@ def run(args):
                     if aplm.songId:
                         if track["id"] != aplm.songId:
                             continue
+
+                    if track.get("coverUrl"):
+                        cover_data = requests.get(track.get("coverUrl"), stream=True).content
                     
                     cons.print(f"[dim]{'-'*35}[/]")
 
@@ -409,7 +414,7 @@ def run(args):
                             os.renames(__mux_fp, __out_fp)
 
                 if not args.noCover:
-                    if aplm.kind != "music-video":
+                    if aplm.kind != "music-video" and aplm.kind != "playlist":
                         with open(os.path.join(out_dir, 'Cover.jpg'), 'wb') as fp:
                             fp.write(cover_data)
         
