@@ -250,11 +250,9 @@ class AppleMusic:
                 'art[url]': 'f',
                 'format[resources]': 'map',
                 'include': 'catalog,artists,tracks,credits',
-                #'include[library-playlists]': 'catalog,tracks,playlists',
                 'include[songs]': 'artists,lyrics,credits,albums',
-                'include[credits]': 'credits',
+                'include[artists]': 'credits',
                 'relate': 'catalog',
-                'omit[resource]': 'autos'
             }
 
         r = self.session.get(url, params=params)
