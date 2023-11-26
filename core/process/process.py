@@ -63,11 +63,11 @@ def muxhls(input, output):
 def muxmv(video, audio, output, at, cc=None):
     cmd_args = [MP4BOX,
                 '-itags', 'tool=',
-                '-add', f'{video}#video:name=:lang=und',
-                '-add', f'{audio}#audio:name=:lang={at["language"]}:group=1',
+                '-add', f'{video}#video:name=:lang=und:group=1',
+                '-add', f'{audio}#audio:name=:lang={at["language"]}:group=2',
                 '-new', output]
     if cc:
-        cmd_args[7:7] = ['-add', f'{cc}:group=2']
+        cmd_args[7:7] = ['-add', f'{cc}:name=:lang=eng:group=3']
     
     try:
         retCode = subprocess.Popen(
