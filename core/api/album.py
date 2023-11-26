@@ -1,7 +1,24 @@
 import m3u8
+from m3u8 import M3U8
 from core import parse
 
 from . import lyrics
+
+def parse_anim(data: M3U8):
+    streamList = []
+    for i, variants in enumerate(data.playlists):
+        streamList.append(
+            {
+                "id": i,
+                "fps": variants.stream_info.frame_rate,
+                "codec": "AVC" if "avc" in variants.stream_info.codecs else "HEVC",
+                "range": variants.stream_info.video_range,
+                "bitrate": f'{round((variants.stream_info.average_bandwidth)/1000000, 2)} Mb/s',
+                "resolution": f'{variants.stream_info.resolution[0]}x{variants.stream_info.resolution[1]}',
+                "uri": variants.uri
+            }
+        )
+    return streamList
 
 def parse_data(data):
     media = {}
@@ -15,27 +32,14 @@ def parse_data(data):
     )
 
     if "editorialVideo" in attr:
+        animdata = {}
         if "motionDetailSquare" in attr["editorialVideo"]:
-            __data = m3u8.load(
-                attr["editorialVideo"]["motionDetailSquare"].get("video")
-            )
-
-            streamList = []
-
-            for i, variants in enumerate(__data.playlists):
-                streamList.append(
-                    {
-                        "id": i,
-                        "fps": variants.stream_info.frame_rate,
-                        "codec": "AVC" if "avc" in variants.stream_info.codecs else "HEVC",
-                        "range": variants.stream_info.video_range,
-                        "bitrate": f'{round((variants.stream_info.average_bandwidth)/1000000, 2)} Mb/s',
-                        "resolution": f'{variants.stream_info.resolution[0]}x{variants.stream_info.resolution[1]}',
-                        "uri": variants.uri
-                    }
-                )
-
-            media["animartwork"] = streamList
+            __data = m3u8.load(attr["editorialVideo"]["motionDetailSquare"].get("video"))
+            animdata['square'] = parse_anim(__data)
+        if "motionDetailTall" in attr["editorialVideo"]:
+            __data = m3u8.load(attr["editorialVideo"]["motionDetailTall"].get("video"))
+            animdata['tall'] = parse_anim(__data)
+        media["animartwork"] = animdata
 
     dirname = parse.sanitize(
         "{} - {} [{}]{}{}{}".format(
