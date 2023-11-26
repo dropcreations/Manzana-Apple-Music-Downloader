@@ -81,7 +81,7 @@ def run(args):
                         if track["id"] != aplm.songId:
                             continue
                     
-                    cons.print(f"[dim]{'-'*35}[/]")
+                    cons.print(f"[dim]{'-'*30}[/]")
 
                     if track["type"] == 1:
                         __enc_fp = os.path.join(
@@ -239,22 +239,21 @@ def run(args):
                                 logger.error("Muxing failed!", 1)
                         else: logger.info("Audio is already muxed!")
 
-                        if not args.noTags:
-                            if not st["isTagged"]:
-                                logger.info("Tagging audio...")
-                                
-                                tag(
-                                    __mux_fp,
-                                    track,
-                                    cover_data,
-                                    [OUTPUTDIR, out_dir],
-                                    args.noCover,
-                                    args.noLrc
-                                )
-                                
-                                st["isTagged"] = True
-                                stats.set(track["id"], st)
-                            else: logger.info("Audio is already tagged!")
+                        if not st["isTagged"]:
+                            logger.info("Tagging audio...")
+                            
+                            tag(
+                                __mux_fp,
+                                track,
+                                cover_data,
+                                [OUTPUTDIR, out_dir],
+                                args.noLrc,
+                                args.noTags
+                            )
+                            
+                            st["isTagged"] = True
+                            stats.set(track["id"], st)
+                        else: logger.info("Audio is already tagged!")
 
                         if os.path.exists(__mux_fp):
                             os.renames(__mux_fp, __out_fp)
@@ -388,22 +387,21 @@ def run(args):
                                 logger.error("Muxing failed!", 1)
                         else: logger.info("Music-video is already muxed!")
 
-                        if not args.noTags:
-                            if not st["isTagged"]:
-                                logger.info("Tagging music-video...")
-                                
-                                tag(
-                                    __mux_fp,
-                                    track,
-                                    cover_data,
-                                    [OUTPUTDIR, out_dir],
-                                    args.noCover,
-                                    args.noLrc
-                                )
-                                
-                                st["isTagged"] = True
-                                stats.set(track["id"], st)
-                            else: logger.info("Music-video is already tagged!")
+                        if not st["isTagged"]:
+                            logger.info("Tagging music-video...")
+                            
+                            tag(
+                                __mux_fp,
+                                track,
+                                cover_data,
+                                [OUTPUTDIR, out_dir],
+                                args.noLrc,
+                                args.noTags
+                            )
+                            
+                            st["isTagged"] = True
+                            stats.set(track["id"], st)
+                        else: logger.info("Music-video is already tagged!")
 
                         if os.path.exists(__mux_fp):
                             os.renames(__mux_fp, __out_fp)
@@ -413,7 +411,7 @@ def run(args):
                         with open(os.path.join(out_dir, 'Cover.jpg'), 'wb') as fp:
                             fp.write(cover_data)
         
-        cons.print(f"[dim]{'-'*35}[/]")
+        cons.print(f"[dim]{'-'*30}[/]")
 
         logger.info("Cleaning temp...")
         for t in os.listdir(TEMPDIR):
