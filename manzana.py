@@ -70,7 +70,7 @@ def main():
     parser.add_argument(
         'url',
         nargs='+',
-        help="Apple Music URL(s) for artist, album, song or music-video",
+        help="Apple Music URL(s) for artist, album, song, playlist or music-video",
         type=str
     )
     
