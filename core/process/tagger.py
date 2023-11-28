@@ -1,4 +1,5 @@
 import os
+import requests
 
 from mutagen.mp4 import MP4, MP4Cover
 from utils import logger
@@ -73,6 +74,8 @@ def tag(media, data, cover, output, nolrc=False, noTags=False):
                         continue
 
         logger.info("Embedding artwork...")
+        if not cover:
+            cover = requests.get(data["coverUrl"], stream=True).content
         tags["covr"] = [MP4Cover(cover, MP4Cover.FORMAT_JPEG)]
         tags.save()
             
