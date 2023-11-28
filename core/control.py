@@ -46,7 +46,10 @@ def run(args):
 
                 out_dir = os.path.join(OUTPUTDIR, dn)
                 os.makedirs(out_dir, exist_ok=True)
-                cover_data = requests.get(sub_data.get("coverUrl"), stream=True).content
+                
+                coverUrl = sub_data.get("coverUrl")
+                if coverUrl: cover_data = requests.get(coverUrl, stream=True).content
+                else: cover_data = None
 
                 if args.anim:
                     __anh_fp = os.path.join(
@@ -408,8 +411,9 @@ def run(args):
 
                 if not args.noCover:
                     if aplm.kind != "music-video":
-                        with open(os.path.join(out_dir, 'Cover.jpg'), 'wb') as fp:
-                            fp.write(cover_data)
+                        if cover_data:
+                            with open(os.path.join(out_dir, 'Cover.jpg'), 'wb') as fp:
+                                fp.write(cover_data)
         
         cons.print(f"[dim]{'-'*30}[/]")
 
@@ -422,4 +426,5 @@ def run(args):
         logger.info("Done.")
         
     except KeyboardInterrupt:
+        print()
         logger.error("Interrupted by user!")
