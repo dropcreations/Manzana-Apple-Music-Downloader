@@ -15,13 +15,14 @@ A python program to download albums and songs with `AAC` codec in `.m4a` contain
 
 - __THIS REPOSITORY IS ONLY FOR EDUCATIONAL PURPOSES.__
 
-This will help you to understand how the Apple Music API works and how to deal with python scripts. You can use the source code to run and test this program or if you're a Windows user, you can also use the compiled binary file `manzana.exe` from the [releases](https://github.com/dropcreations/Manzana-Apple-Music-Downloader/releases).
+This will help you to understand how the Apple Music API works and how to deal with python scripts. You can use the source code to run and test this program or you can also use the compiled binary files from the [releases](https://github.com/dropcreations/Manzana-Apple-Music-Downloader/releases).
 
 ## Features
 
 - Can download __album__ urls.
 - Can download __song__ urls.
 - Can download __music-video__ urls.
+- Can download __playlist__ urls.
 - Can download __artist__ urls (all albums, singles, music-videos).
 - Can download __animated-cover__.
 - Can download __time-synced lyrics__ as `.lrc`.
@@ -83,7 +84,7 @@ usage: manzana [-h] [-v] [-a] [-s] [-ln] [-tn] [-cn] url [url ...]
 Manzana: Apple Music Downloader
 
 positional arguments:
-  url               Apple Music URL(s) for artist, album, song or music-video
+  url               Apple Music URL(s) for artist, album, song, playlist or music-video
 
 optional arguments:
   -h, --help        show this help message and exit
