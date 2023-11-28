@@ -21,6 +21,7 @@ from utils import WidevinePsshData
 from . import artist
 from . import album
 from . import musicvideo
+from . import playlist
 
 cons = Console()
 
@@ -241,6 +242,13 @@ class AppleMusic:
                 'extend': 'editorialVideo',
                 'include[songs]': 'lyrics,credits'
             }
+        elif self.kind == "playlist":
+            params = {
+                'extend': 'editorialVideo',
+                'include': 'tracks',
+                'limit[tracks]': 100,
+                'include[songs]': 'lyrics,credits,albums'
+            }
 
         r = self.session.get(
             f"https://amp-api.music.apple.com/v1/catalog/{self.storefront}/{self.kind}s/{self.id}?l={self.language}",
@@ -249,6 +257,28 @@ class AppleMusic:
         r = json.loads(r.text)
 
         if not "errors" in r:
+            if self.kind == "playlist":
+                nextUrl = r["data"][0]["relationships"]["tracks"].get("next")
+                if nextUrl:
+                    cont = r["data"][0]["relationships"]["tracks"]["data"]
+                    url = f"https://amp-api.music.apple.com{nextUrl}"
+
+                    while True:
+                        rt = self.session.get(
+                            url,
+                            params={
+                                'include[songs]': 'lyrics,credits,albums'
+                            }
+                        )
+                        rt = json.loads(rt.text)
+
+                        cont += rt["data"]
+
+                        if "next" in rt:
+                            url = f"https://amp-api.music.apple.com{rt['next']}"
+                        else: break
+
+                    r["data"][0]["relationships"]["tracks"]["data"] = cont
             return r
         else:
             errors = r["errors"]
@@ -275,6 +305,10 @@ class AppleMusic:
             )
         elif self.kind == "music-video":
             data = musicvideo.parse_data(
+                self.__get_api()["data"][0]
+            )
+        elif self.kind == "playlist":
+            data = playlist.parse_data(
                 self.__get_api()["data"][0]
             )
         
